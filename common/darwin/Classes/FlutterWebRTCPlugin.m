@@ -626,7 +626,13 @@
             return;
         }
         RTCRtpSender* sender = [peerConnection addTrack:track streamIds:streamIds];
-        result([self rtpSenderToMap:sender]);
+        if(sender){
+            result([self rtpSenderToMap:sender]);
+        }else{
+            result([FlutterError errorWithCode:[NSString stringWithFormat:@"%@Failed",call.method]
+            message:[NSString stringWithFormat:@"Error: track already exist or not found!"]
+            details:nil]);
+        }
     } else if ([@"removeTrack" isEqualToString:call.method]){
         NSDictionary* argsMap = call.arguments;
         NSString* peerConnectionId = argsMap[@"peerConnectionId"];
