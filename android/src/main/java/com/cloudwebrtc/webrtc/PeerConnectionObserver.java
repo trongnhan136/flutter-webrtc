@@ -865,8 +865,13 @@ class PeerConnectionObserver implements PeerConnection.Observer, EventChannel.St
   }
 
   public void addTrack(MediaStreamTrack track, List<String> streamIds, Result result){
-      RtpSender sender = peerConnection.addTrack(track, streamIds);
-      result.success(rtpSenderToMap(sender));
+      try {
+          RtpSender sender = peerConnection.addTrack(track, streamIds);
+          result.success(rtpSenderToMap(sender));
+      }catch (Exception ex){
+          resultError("addTrack", ex.getMessage(), result);
+      }
+
   }
 
   public void removeTrack(String senderId, Result result){
