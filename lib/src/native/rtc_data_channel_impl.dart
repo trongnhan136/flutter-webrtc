@@ -22,21 +22,21 @@ class RTCDataChannelNative extends RTCDataChannel {
         .receiveBroadcastStream()
         .listen(eventListener, onError: errorListener);
   }
-  final String _peerConnectionId;
-  final String _label;
-  final int _dataChannelId;
-  RTCDataChannelState _state;
+  final String? _peerConnectionId;
+  final String? _label;
+  final int? _dataChannelId;
+  RTCDataChannelState? _state;
   final _channel = WebRTC.methodChannel();
-  StreamSubscription<dynamic> _eventSubscription;
+  StreamSubscription<dynamic>? _eventSubscription;
 
   @override
-  RTCDataChannelState get state => _state;
+  RTCDataChannelState? get state => _state;
 
   /// Get label.
-  String get label => _label;
+  String? get label => _label;
 
   final _stateChangeController =
-      StreamController<RTCDataChannelState>.broadcast(sync: true);
+      StreamController<RTCDataChannelState?>.broadcast(sync: true);
   final _messageController =
       StreamController<RTCDataChannelMessage>.broadcast(sync: true);
 
@@ -70,13 +70,13 @@ class RTCDataChannelNative extends RTCDataChannel {
     }
   }
 
-  EventChannel _eventChannelFor(String peerConnectionId, int dataChannelId) {
+  EventChannel _eventChannelFor(String? peerConnectionId, int? dataChannelId) {
     return EventChannel(
         'FlutterWebRTC/dataChannelEvent$peerConnectionId$dataChannelId');
   }
 
   void errorListener(Object obj) {
-    final PlatformException e = obj;
+    final PlatformException e = obj as PlatformException;
     throw e;
   }
 
@@ -85,8 +85,8 @@ class RTCDataChannelNative extends RTCDataChannel {
     await _channel.invokeMethod('dataChannelSend', <String, dynamic>{
       'peerConnectionId': _peerConnectionId,
       'dataChannelId': _dataChannelId,
-      'type': message.isBinary ? 'binary' : 'text',
-      'data': message.isBinary ? message.binary : message.text,
+      'type': message.isBinary! ? 'binary' : 'text',
+      'data': message.isBinary! ? message.binary : message.text,
     });
   }
 

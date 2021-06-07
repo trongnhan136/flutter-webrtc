@@ -9,14 +9,14 @@ import 'utils.dart';
 class RTCVideoRendererNative extends VideoRenderer {
   RTCVideoRendererNative();
   final _channel = WebRTC.methodChannel();
-  int _textureId;
-  MediaStream _srcObject;
-  StreamSubscription<dynamic> _eventSubscription;
+  int? _textureId;
+  MediaStream? _srcObject;
+  StreamSubscription<dynamic>? _eventSubscription;
 
   @override
   Future<void> initialize() async {
-    final response = await _channel
-        .invokeMethod<Map<dynamic, dynamic>>('createVideoRenderer', {});
+    final response = await (_channel
+        .invokeMethod<Map<dynamic, dynamic>>('createVideoRenderer', {}) as FutureOr<Map<dynamic, dynamic>>);
     _textureId = response['textureId'];
     _eventSubscription = EventChannel('FlutterWebRTC/Texture$textureId')
         .receiveBroadcastStream()
@@ -30,13 +30,13 @@ class RTCVideoRendererNative extends VideoRenderer {
   int get videoHeight => value.height.toInt();
 
   @override
-  int get textureId => _textureId;
+  int? get textureId => _textureId;
 
   @override
-  MediaStream get srcObject => _srcObject;
+  MediaStream? get srcObject => _srcObject;
 
   @override
-  set srcObject(MediaStream stream) {
+  set srcObject(MediaStream? stream) {
     if (textureId == null) throw 'Call initialize before setting the stream';
 
     _srcObject = stream;
@@ -83,7 +83,7 @@ class RTCVideoRendererNative extends VideoRenderer {
   }
 
   void errorListener(Object obj) {
-    final PlatformException e = obj;
+    final PlatformException e = obj as PlatformException;
     throw e;
   }
 

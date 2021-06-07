@@ -9,5 +9,5 @@ class MediaStreamConstraints {
 abstract class MediaDevices {
   Future<MediaStream> getUserMedia(Map<String, dynamic> mediaConstraints);
   Future<MediaStream> getDisplayMedia(Map<String, dynamic> mediaConstraints);
-  Future<List<dynamic>> getSources();
+  Future<List<dynamic>?> getSources();
 }

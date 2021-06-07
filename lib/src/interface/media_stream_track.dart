@@ -3,23 +3,23 @@ typedef StreamTrackCallback = Function();
 abstract class MediaStreamTrack {
   MediaStreamTrack();
 
-  StreamTrackCallback onEnded;
+  StreamTrackCallback? onEnded;
 
-  StreamTrackCallback onMute;
+  StreamTrackCallback? onMute;
 
-  bool get enabled;
+  bool? get enabled;
 
-  set enabled(bool b);
+  set enabled(bool? b);
 
-  String get label;
+  String? get label;
 
-  String get kind;
+  String? get kind;
 
-  String get id;
+  String? get id;
 
   ///Future contains isFrontCamera
   ///Throws error if switching camera failed
-  Future<bool> switchCamera();
+  Future<bool?> switchCamera();
 
   Future<void> adaptRes(int width, int height);
 
@@ -29,9 +29,11 @@ abstract class MediaStreamTrack {
 
   void enableSpeakerphone(bool enable);
 
-  Future<dynamic> captureFrame([String filePath]);
+  Future<dynamic> captureFrame([String? filePath]);
 
-  Future<bool> hasTorch();
+  Future<bool> hasTorch() {
+    throw UnimplementedError();
+  }
 
   Future<void> setTorch(bool torch);
 

@@ -13,19 +13,19 @@ import 'rtc_session_description.dart';
 import 'rtc_stats_report.dart';
 import 'rtc_track_event.dart';
 
-typedef SignalingStateCallback = void Function(RTCSignalingState state);
+typedef SignalingStateCallback = void Function(RTCSignalingState? state);
 typedef PeerConnectionStateCallback = void Function(
-    RTCPeerConnectionState state);
-typedef IceGatheringStateCallback = void Function(RTCIceGatheringState state);
-typedef IceConnectionStateCallback = void Function(RTCIceConnectionState state);
+    RTCPeerConnectionState? state);
+typedef IceGatheringStateCallback = void Function(RTCIceGatheringState? state);
+typedef IceConnectionStateCallback = void Function(RTCIceConnectionState? state);
 typedef IceCandidateCallback = void Function(RTCIceCandidate candidate);
-typedef AddStreamCallback = void Function(MediaStream stream);
-typedef RemoveStreamCallback = void Function(MediaStream stream);
+typedef AddStreamCallback = void Function(MediaStream? stream);
+typedef RemoveStreamCallback = void Function(MediaStream? stream);
 typedef AddTrackCallback = void Function(
     MediaStream stream, MediaStreamTrack track);
 typedef RemoveTrackCallback = void Function(
-    MediaStream stream, MediaStreamTrack track);
-typedef RTCDataChannelCallback = void Function(RTCDataChannel channel);
+    MediaStream? stream, MediaStreamTrack track);
+typedef RTCDataChannelCallback = void Function(RTCDataChannel? channel);
 typedef RenegotiationNeededCallback = void Function();
 
 /// Unified-Plan
@@ -35,28 +35,28 @@ abstract class RTCPeerConnection {
   RTCPeerConnection();
 
   // public: delegate
-  SignalingStateCallback onSignalingState;
-  PeerConnectionStateCallback onConnectionState;
-  IceGatheringStateCallback onIceGatheringState;
-  IceConnectionStateCallback onIceConnectionState;
-  IceCandidateCallback onIceCandidate;
-  AddStreamCallback onAddStream;
-  RemoveStreamCallback onRemoveStream;
-  AddTrackCallback onAddTrack;
-  RemoveTrackCallback onRemoveTrack;
-  RTCDataChannelCallback onDataChannel;
-  RenegotiationNeededCallback onRenegotiationNeeded;
+  SignalingStateCallback? onSignalingState;
+  PeerConnectionStateCallback? onConnectionState;
+  IceGatheringStateCallback? onIceGatheringState;
+  IceConnectionStateCallback? onIceConnectionState;
+  IceCandidateCallback? onIceCandidate;
+  AddStreamCallback? onAddStream;
+  RemoveStreamCallback? onRemoveStream;
+  AddTrackCallback? onAddTrack;
+  RemoveTrackCallback? onRemoveTrack;
+  RTCDataChannelCallback? onDataChannel;
+  RenegotiationNeededCallback? onRenegotiationNeeded;
 
   /// Unified-Plan
-  UnifiedPlanTrackCallback onTrack;
+  UnifiedPlanTrackCallback? onTrack;
 
-  RTCSignalingState get signalingState;
+  RTCSignalingState? get signalingState;
 
-  RTCIceGatheringState get iceGatheringState;
+  RTCIceGatheringState? get iceGatheringState;
 
-  RTCIceConnectionState get iceConnectionState;
+  RTCIceConnectionState? get iceConnectionState;
 
-  RTCPeerConnectionState get connectionState;
+  RTCPeerConnectionState? get connectionState;
 
   Future<void> dispose();
 
@@ -64,10 +64,10 @@ abstract class RTCPeerConnection {
 
   Future<void> setConfiguration(Map<String, dynamic> configuration);
 
-  Future<RTCSessionDescription> createOffer([Map<String, dynamic> constraints]);
+  Future<RTCSessionDescription> createOffer([Map<String, dynamic>? constraints]);
 
   Future<RTCSessionDescription> createAnswer(
-      [Map<String, dynamic> constraints]);
+      [Map<String, dynamic>? constraints]);
 
   Future<void> addStream(MediaStream stream);
 
@@ -81,13 +81,13 @@ abstract class RTCPeerConnection {
 
   Future<void> addCandidate(RTCIceCandidate candidate);
 
-  Future<List<StatsReport>> getStats([MediaStreamTrack track]);
+  Future<List<StatsReport>> getStats([MediaStreamTrack? track]);
 
-  List<MediaStream> getLocalStreams();
+  List<MediaStream?> getLocalStreams();
 
-  List<MediaStream> getRemoteStreams();
+  List<MediaStream?> getRemoteStreams();
 
-  Future<RTCDataChannel> createDataChannel(
+  Future<RTCDataChannel?> createDataChannel(
       String label, RTCDataChannelInit dataChannelDict);
 
   Future<void> close();
@@ -107,13 +107,13 @@ abstract class RTCPeerConnection {
 
   Future<List<RTCRtpTransceiver>> get transceivers => getTransceivers();
 
-  Future<RTCRtpSender> addTrack(MediaStreamTrack track, [MediaStream stream]);
+  Future<RTCRtpSender> addTrack(MediaStreamTrack track, [MediaStream? stream]);
 
-  Future<bool> removeTrack(RTCRtpSender sender);
+  Future<bool?> removeTrack(RTCRtpSender sender);
 
   /// 'audio|video', { 'direction': 'recvonly|sendonly|sendrecv' }
   Future<RTCRtpTransceiver> addTransceiver(
-      {MediaStreamTrack track,
-      RTCRtpMediaType kind,
-      RTCRtpTransceiverInit init});
+      {MediaStreamTrack? track,
+      RTCRtpMediaType? kind,
+      RTCRtpTransceiverInit? init});
 }

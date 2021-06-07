@@ -11,12 +11,12 @@ class RTCRtpReceiverWeb extends RTCRtpReceiver {
   RTCRtpReceiverWeb(this._jsRtpReceiver);
 
   /// private:
-  final Object _jsRtpReceiver;
+  final Object? _jsRtpReceiver;
 
   @override
   Future<List<StatsReport>> getStats() async {
     var stats = await jsutil.promiseToFuture<dynamic>(
-        jsutil.callMethod(_jsRtpReceiver, 'getStats', []));
+        jsutil.callMethod(_jsRtpReceiver!, 'getStats', []));
     var report = <StatsReport>[];
     stats.forEach((key, value) {
       report.add(
@@ -30,14 +30,14 @@ class RTCRtpReceiverWeb extends RTCRtpReceiver {
   /// http://ortc.org/wp-content/uploads/2016/03/ortc.html#rtcrtpparameters*.
   @override
   RTCRtpParameters get parameters {
-    var parameters = jsutil.callMethod(_jsRtpReceiver, 'getParameters', []);
+    var parameters = jsutil.callMethod(_jsRtpReceiver!, 'getParameters', []);
     return RTCRtpParametersWeb.fromJsObject(parameters);
   }
 
   @override
   MediaStreamTrack get track =>
-      MediaStreamTrackWeb(jsutil.getProperty(_jsRtpReceiver, 'track'));
+      MediaStreamTrackWeb(jsutil.getProperty(_jsRtpReceiver!, 'track'));
 
   @override
-  String get receiverId => jsutil.getProperty(_jsRtpReceiver, 'receiverId');
+  String? get receiverId => jsutil.getProperty(_jsRtpReceiver!, 'receiverId');
 }

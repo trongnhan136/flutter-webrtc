@@ -13,7 +13,7 @@ class MediaRecorderNative extends MediaRecorder {
 
   @override
   Future<void> start(String path,
-      {MediaStreamTrack videoTrack, RecorderAudioChannel audioChannel
+      {MediaStreamTrack? videoTrack, RecorderAudioChannel? audioChannel
       // TODO(cloudwebrtc): add codec/quality options
       }) async {
     if (path == null) {
@@ -34,7 +34,7 @@ class MediaRecorderNative extends MediaRecorder {
 
   @override
   void startWeb(MediaStream stream,
-      {Function(dynamic blob, bool isLastOne) onDataChunk, String mimeType}) {
+      {Function(dynamic blob, bool isLastOne)? onDataChunk, String? mimeType}) {
     throw 'It\'s for Flutter Web only';
   }
 

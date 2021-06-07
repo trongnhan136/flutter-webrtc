@@ -16,11 +16,11 @@ class GetUserMediaSample extends StatefulWidget {
 }
 
 class _GetUserMediaSampleState extends State<GetUserMediaSample> {
-  MediaStream _localStream;
+  MediaStream? _localStream;
   final _localRenderer = RTCVideoRenderer();
   bool _inCalling = false;
   bool _isTorchOn = false;
-  MediaRecorder _mediaRecorder;
+  MediaRecorder? _mediaRecorder;
   bool get _isRec => _mediaRecorder != null;
 
   @override
@@ -74,7 +74,7 @@ class _GetUserMediaSampleState extends State<GetUserMediaSample> {
 
   void _hangUp() async {
     try {
-      await _localStream.dispose();
+      await _localStream!.dispose();
       _localRenderer.srcObject = null;
     } catch (e) {
       print(e.toString());
@@ -85,22 +85,25 @@ class _GetUserMediaSampleState extends State<GetUserMediaSample> {
   }
 
   void _startRecording() async {
+    if (_localStream == null) throw Exception('Stream is not initialized');
     if (Platform.isIOS) {
       print('Recording is not available on iOS');
       return;
     }
     // TODO(rostopira): request write storage permission
     final storagePath = await getExternalStorageDirectory();
+    if (storagePath == null) throw Exception('Can\'t find storagePath');
+
     final filePath = storagePath.path + '/webrtc_sample/test.mp4';
-    _mediaRecorder = MediaRecorder();
+    _mediaRecorder =  MediaRecorder ();
     setState(() {});
-    await _localStream.getMediaTracks();
-    final videoTrack = _localStream
+
+    final videoTrack = _localStream!
         .getVideoTracks()
         .firstWhere((track) => track.kind == 'video');
-    await _mediaRecorder.start(
+    await _mediaRecorder!.start(
       filePath,
-      videoTrack: videoTrack,
+      videoTrack : videoTrack,
     );
   }
 
@@ -112,14 +115,16 @@ class _GetUserMediaSampleState extends State<GetUserMediaSample> {
   }
 
   void _toggleTorch() async {
-    final videoTrack = _localStream
+    if (_localStream == null) throw Exception('Stream is not initialized');
+
+    final videoTrack = _localStream!
         .getVideoTracks()
         .firstWhere((track) => track.kind == 'video');
     final has = await videoTrack.hasTorch();
-    if (has) {
+    if (has!) {
       print('[TORCH] Current camera supports torch mode');
       setState(() => _isTorchOn = !_isTorchOn);
-      await videoTrack.setTorch(_isTorchOn);
+      await videoTrack. setTorch (_isTorchOn);
       print('[TORCH] Torch state is now ${_isTorchOn ? 'on' : 'off'}');
     } else {
       print('[TORCH] Current camera does not support torch mode');
@@ -127,26 +132,31 @@ class _GetUserMediaSampleState extends State<GetUserMediaSample> {
   }
 
   void _toggleCamera() async {
-    final videoTrack = _localStream
+    final videoTrack = _localStream!
         .getVideoTracks()
         .firstWhere((track) => track.kind == 'video');
     await videoTrack.switchCamera();
   }
 
   void _captureFrame() async {
-    String filePath;
-    if (Platform.isAndroid) {
-      final storagePath = await getExternalStorageDirectory();
-      filePath = storagePath.path + '/webrtc_sample/test.jpg';
-    } else {
-      final storagePath = await getApplicationDocumentsDirectory();
-      filePath = storagePath.path + '/test${DateTime.now()}.jpg';
-    }
+    if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream
+    final videoTrack = _localStream!
         .getVideoTracks()
         .firstWhere((track) => track.kind == 'video');
-    await videoTrack.captureFrame(filePath);
+    final frame = await videoTrack.captureFrame();
+    await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content:
+          Image.memory(frame.asUint8List(), height: 720, width: 1280),
+          actions: <Widget>[
+            TextButton (
+              onPressed: Navigator.of(context, rootNavigator: true).pop,
+              child: Text('OK'),
+            )
+          ],
+        ));
   }
 
   @override

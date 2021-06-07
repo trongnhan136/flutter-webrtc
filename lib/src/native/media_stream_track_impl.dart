@@ -5,40 +5,40 @@ import 'utils.dart';
 
 class MediaStreamTrackNative extends MediaStreamTrack {
   MediaStreamTrackNative(this._trackId, this._label, this._kind, this._enabled);
+
   factory MediaStreamTrackNative.fromMap(Map<dynamic, dynamic> map) {
-    return MediaStreamTrackNative(
-        map['id'], map['label'], map['kind'], map['enabled']);
+    return MediaStreamTrackNative(map['id'], map['label'], map['kind'], map['enabled']);
   }
+
   final _channel = WebRTC.methodChannel();
-  final String _trackId;
-  final String _label;
-  final String _kind;
-  bool _enabled;
+  final String? _trackId;
+  final String? _label;
+  final String? _kind;
+  bool? _enabled;
 
   @override
-  set enabled(bool enabled) {
-    _channel.invokeMethod('mediaStreamTrackSetEnable',
-        <String, dynamic>{'trackId': _trackId, 'enabled': enabled});
+  set enabled(bool? enabled) {
+    _channel.invokeMethod('mediaStreamTrackSetEnable', <String, dynamic>{'trackId': _trackId, 'enabled': enabled});
     _enabled = enabled;
   }
 
   @override
-  bool get enabled => _enabled;
+  bool? get enabled => _enabled;
 
   @override
-  String get label => _label;
+  String? get label => _label;
 
   @override
-  String get kind => _kind;
+  String? get kind => _kind;
 
   @override
-  String get id => _trackId;
+  String? get id => _trackId;
 
   @override
-  Future<bool> hasTorch() => _channel.invokeMethod(
+  Future<bool> hasTorch() => _channel.invokeMethod<bool>(
         'mediaStreamTrackHasTorch',
         <String, dynamic>{'trackId': _trackId},
-      );
+      ).then((value) => value ?? false);
 
   @override
   Future<void> setTorch(bool torch) => _channel.invokeMethod(
@@ -47,7 +47,7 @@ class MediaStreamTrackNative extends MediaStreamTrack {
       );
 
   @override
-  Future<bool> switchCamera() => _channel.invokeMethod(
+  Future<bool?> switchCamera() => _channel.invokeMethod(
         'mediaStreamTrackSwitchCamera',
         <String, dynamic>{'trackId': _trackId},
       );
@@ -79,7 +79,7 @@ class MediaStreamTrackNative extends MediaStreamTrack {
   }
 
   @override
-  Future<dynamic> captureFrame([String filePath]) {
+  Future<dynamic> captureFrame([String? filePath]) {
     return _channel.invokeMethod<void>(
       'captureFrame',
       <String, dynamic>{'trackId': _trackId, 'path': filePath},

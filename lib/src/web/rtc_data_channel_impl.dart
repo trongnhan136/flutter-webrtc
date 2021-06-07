@@ -9,30 +9,30 @@ class RTCDataChannelWeb extends RTCDataChannel {
   RTCDataChannelWeb(this._jsDc) {
     stateChangeStream = _stateChangeController.stream;
     messageStream = _messageController.stream;
-    _jsDc.onClose.listen((_) {
+    _jsDc!.onClose.listen((_) {
       _state = RTCDataChannelState.RTCDataChannelClosed;
       _stateChangeController.add(_state);
       if (onDataChannelState != null) {
-        onDataChannelState(_state);
+        onDataChannelState!(_state);
       }
     });
-    _jsDc.onOpen.listen((_) {
+    _jsDc!.onOpen.listen((_) {
       _state = RTCDataChannelState.RTCDataChannelOpen;
       _stateChangeController.add(_state);
       if (onDataChannelState != null) {
-        onDataChannelState(_state);
+        onDataChannelState!(_state);
       }
     });
-    _jsDc.onMessage.listen((event) async {
+    _jsDc!.onMessage.listen((event) async {
       var msg = await _parse(event.data);
       _messageController.add(msg);
       if (onMessage != null) {
-        onMessage(msg);
+        onMessage!(msg);
       }
     });
   }
 
-  final html.RtcDataChannel _jsDc;
+  final html.RtcDataChannel? _jsDc;
   RTCDataChannelState _state = RTCDataChannelState.RTCDataChannelConnecting;
 
   @override
@@ -58,11 +58,11 @@ class RTCDataChannelWeb extends RTCDataChannel {
 
   @override
   Future<void> send(RTCDataChannelMessage message) {
-    if (!message.isBinary) {
-      _jsDc.send(message.text);
+    if (!message.isBinary!) {
+      _jsDc!.send(message.text);
     } else {
       // This may just work
-      _jsDc.sendByteBuffer(message.binary.buffer);
+      _jsDc!.sendByteBuffer(message.binary!.buffer);
       // If not, convert to ArrayBuffer/Blob
     }
     return Future.value();
@@ -70,7 +70,7 @@ class RTCDataChannelWeb extends RTCDataChannel {
 
   @override
   Future<void> close() {
-    _jsDc.close();
+    _jsDc!.close();
     return Future.value();
   }
 }

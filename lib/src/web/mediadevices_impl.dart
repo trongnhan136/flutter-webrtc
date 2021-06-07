@@ -23,7 +23,7 @@ class MediaDevicesWeb extends MediaDevices {
       mediaConstraints.putIfAbsent('video', () => false);
       mediaConstraints.putIfAbsent('audio', () => false);
 
-      final mediaDevices = html.window.navigator.mediaDevices;
+      final mediaDevices = html.window.navigator.mediaDevices!;
 
       if (jsutil.hasProperty(mediaDevices, 'getUserMedia')) {
         var args = jsutil.jsify(mediaConstraints);
@@ -47,7 +47,7 @@ class MediaDevicesWeb extends MediaDevices {
   Future<MediaStream> getDisplayMedia(
       Map<String, dynamic> mediaConstraints) async {
     try {
-      final mediaDevices = html.window.navigator.mediaDevices;
+      final mediaDevices = html.window.navigator.mediaDevices!;
       if (jsutil.hasProperty(mediaDevices, 'getDisplayMedia')) {
         final arg = JsObject.jsify(mediaConstraints);
 
@@ -67,13 +67,13 @@ class MediaDevicesWeb extends MediaDevices {
 
   @override
   Future<List<dynamic>> getSources() async {
-    final devices = await html.window.navigator.mediaDevices.enumerateDevices();
+    final devices = await html.window.navigator.mediaDevices!.enumerateDevices();
 
     final result = <dynamic>[];
     for (final device in devices) {
       var input = device as html.MediaDeviceInfo;
       // info
-      result.add(<String, String>{
+      result.add(<String, String?>{
         'deviceId': input.deviceId,
         'groupId': input.groupId,
         'kind': input.kind,

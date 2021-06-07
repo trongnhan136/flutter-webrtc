@@ -18,7 +18,7 @@ class MediaStreamWeb extends MediaStream {
   Future<void> addTrack(MediaStreamTrack track, {bool addToNative = true}) {
     if (addToNative) {
       var _native = track as MediaStreamTrackWeb;
-      jsStream.addTrack(_native.jsTrack);
+      jsStream.addTrack(_native.jsTrack!);
     }
     return Future.value();
   }
@@ -28,7 +28,7 @@ class MediaStreamWeb extends MediaStream {
       {bool removeFromNative = true}) async {
     if (removeFromNative) {
       var _native = track as MediaStreamTrackWeb;
-      jsStream.removeTrack(_native.jsTrack);
+      jsStream.removeTrack(_native.jsTrack!);
     }
   }
 

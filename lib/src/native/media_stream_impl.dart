@@ -6,7 +6,7 @@ import 'media_stream_track_impl.dart';
 import 'utils.dart';
 
 class MediaStreamNative extends MediaStream {
-  MediaStreamNative(String streamId, String ownerTag)
+  MediaStreamNative(String? streamId, String? ownerTag)
       : super(streamId, ownerTag);
 
   factory MediaStreamNative.fromMap(Map<dynamic, dynamic> map) {
@@ -40,10 +40,10 @@ class MediaStreamNative extends MediaStream {
 
   @override
   Future<void> getMediaTracks() async {
-    final response = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+    final response = await (_channel.invokeMethod<Map<dynamic, dynamic>>(
       'mediaStreamGetTracks',
       <String, dynamic>{'streamId': id},
-    );
+    ) as FutureOr<Map<dynamic, dynamic>>);
 
     setMediaTracks(response['audioTracks'], response['videoTracks']);
   }

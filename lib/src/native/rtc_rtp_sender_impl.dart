@@ -17,7 +17,7 @@ class RTCRtpSenderNative extends RTCRtpSender {
       this._ownsTrack, this._peerConnectionId);
 
   factory RTCRtpSenderNative.fromMap(Map<dynamic, dynamic> map,
-      {String peerConnectionId}) {
+      {String? peerConnectionId}) {
     return RTCRtpSenderNative(
         map['senderId'],
         MediaStreamTrackNative.fromMap(map['track']),
@@ -28,7 +28,7 @@ class RTCRtpSenderNative extends RTCRtpSender {
   }
 
   static List<RTCRtpSenderNative> fromMaps(List<dynamic> map,
-      {String peerConnectionId}) {
+      {String? peerConnectionId}) {
     return map
         .map((e) =>
             RTCRtpSenderNative.fromMap(e, peerConnectionId: peerConnectionId))
@@ -36,12 +36,12 @@ class RTCRtpSenderNative extends RTCRtpSender {
   }
 
   final MethodChannel _channel = WebRTC.methodChannel();
-  String _peerConnectionId;
-  String _id;
+  String? _peerConnectionId;
+  String? _id;
   MediaStreamTrack _track;
   RTCDTMFSender _dtmf;
   RTCRtpParameters _parameters;
-  bool _ownsTrack = false;
+  bool? _ownsTrack = false;
 
   @override
   Future<List<StatsReport>> getStats() async {
@@ -66,7 +66,7 @@ class RTCRtpSenderNative extends RTCRtpSender {
   }
 
   @override
-  Future<bool> setParameters(RTCRtpParameters parameters) async {
+  Future<bool?> setParameters(RTCRtpParameters parameters) async {
     _parameters = parameters;
     try {
       final response = await _channel
@@ -116,10 +116,10 @@ class RTCRtpSenderNative extends RTCRtpSender {
   MediaStreamTrack get track => _track;
 
   @override
-  String get senderId => _id;
+  String? get senderId => _id;
 
   @override
-  bool get ownsTrack => _ownsTrack;
+  bool? get ownsTrack => _ownsTrack;
 
   @override
   RTCDTMFSender get dtmfSender => _dtmf;

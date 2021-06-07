@@ -4,16 +4,16 @@ typedef MediaTrackCallback = void Function(MediaStreamTrack track);
 
 abstract class MediaStream {
   MediaStream(this._id, this._ownerTag);
-  final String _id;
-  final String _ownerTag;
+  final String? _id;
+  final String? _ownerTag;
 
-  MediaTrackCallback onAddTrack;
+  MediaTrackCallback? onAddTrack;
 
-  MediaTrackCallback onRemoveTrack;
+  MediaTrackCallback? onRemoveTrack;
 
-  String get id => _id;
+  String? get id => _id;
 
-  String get ownerTag => _ownerTag;
+  String? get ownerTag => _ownerTag;
 
   Future<void> getMediaTracks();
 

@@ -17,7 +17,7 @@ class MediaDevices {
 
   @Deprecated(
       'Use the navigator.mediaDevices.getSources() provide from the facrory instead')
-  static Future<List<dynamic>> getSources() {
+  static Future<List<dynamic>?> getSources() {
     return navigator.mediaDevices.getSources();
   }
 }

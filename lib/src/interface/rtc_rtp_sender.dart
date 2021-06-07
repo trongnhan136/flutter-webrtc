@@ -10,7 +10,7 @@ import 'rtc_stats_report.dart';
 abstract class RTCRtpSender {
   RTCRtpSender();
 
-  Future<bool> setParameters(RTCRtpParameters parameters);
+  Future<bool?> setParameters(RTCRtpParameters parameters);
 
   Future<void> replaceTrack(MediaStreamTrack track);
 
@@ -22,9 +22,9 @@ abstract class RTCRtpSender {
 
   MediaStreamTrack get track;
 
-  String get senderId;
+  String? get senderId;
 
-  bool get ownsTrack;
+  bool? get ownsTrack;
 
   RTCDTMFSender get dtmfSender;
 

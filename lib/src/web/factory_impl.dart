@@ -21,9 +21,9 @@ class RTCFactoryWeb extends RTCFactory {
   @override
   Future<RTCPeerConnection> createPeerConnection(
       Map<String, dynamic> configuration,
-      [Map<String, dynamic> constraints]) async {
+      [Map<String, dynamic>? constraints]) async {
     final constr = (constraints != null && constraints.isNotEmpty)
-        ? constraints
+        ? constraints as Map<String, Object>
         : {
             'mandatory': {},
             'optional': [

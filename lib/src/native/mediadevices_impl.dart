@@ -13,11 +13,11 @@ class MediaDeviceNative extends MediaDevices {
       Map<String, dynamic> mediaConstraints) async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
         'getUserMedia',
         <String, dynamic>{'constraints': mediaConstraints},
-      );
-      String streamId = response['streamId'];
+      ) as FutureOr<Map<dynamic, dynamic>>);
+      String? streamId = response['streamId'];
       var stream = MediaStreamNative(streamId, 'local');
       stream.setMediaTracks(response['audioTracks'], response['videoTracks']);
       return stream;
@@ -31,11 +31,11 @@ class MediaDeviceNative extends MediaDevices {
       Map<String, dynamic> mediaConstraints) async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
         'getDisplayMedia',
         <String, dynamic>{'constraints': mediaConstraints},
-      );
-      String streamId = response['streamId'];
+      ) as FutureOr<Map<dynamic, dynamic>>);
+      String? streamId = response['streamId'];
       var stream = MediaStreamNative(streamId, 'local');
       stream.setMediaTracks(response['audioTracks'], response['videoTracks']);
       return stream;
@@ -45,14 +45,14 @@ class MediaDeviceNative extends MediaDevices {
   }
 
   @override
-  Future<List<dynamic>> getSources() async {
+  Future<List<dynamic>?> getSources() async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
         'getSources',
         <String, dynamic>{},
-      );
-      List<dynamic> sources = response['sources'];
+      ) as FutureOr<Map<dynamic, dynamic>>);
+      List<dynamic>? sources = response['sources'];
       return sources;
     } on PlatformException catch (e) {
       throw 'Unable to getSources: ${e.message}';

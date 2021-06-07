@@ -5,10 +5,10 @@ class RTCRTCPParameters {
   }
 
   /// The Canonical Name used by RTCP
-  String cname;
+  String? cname;
 
   /// Whether reduced size RTCP is configured or compound RTCP
-  bool reducedSize;
+  bool? reducedSize;
 
   Map<String, dynamic> toMap() {
     return {

@@ -15,10 +15,10 @@ class GetDisplayMediaSample extends StatefulWidget {
 }
 
 class _GetDisplayMediaSampleState extends State<GetDisplayMediaSample> {
-  MediaStream _localStream;
+  MediaStream? _localStream;
   final _localRenderer = RTCVideoRenderer();
   bool _inCalling = false;
-  Timer _timer;
+  Timer? _timer;
   var _counter = 0;
 
   @override
@@ -33,7 +33,7 @@ class _GetDisplayMediaSampleState extends State<GetDisplayMediaSample> {
     if (_inCalling) {
       _stop();
     }
-    if (_timer != null) _timer.cancel();
+    if (_timer != null) _timer!.cancel();
     _localRenderer.dispose();
   }
 
@@ -75,7 +75,7 @@ class _GetDisplayMediaSampleState extends State<GetDisplayMediaSample> {
   Future<void> _stop() async {
     try {
       if (_localStream != null) {
-        await _localStream.dispose();
+        await _localStream!.dispose();
         _localStream = null;
       }
       _localRenderer.srcObject = null;
@@ -89,7 +89,7 @@ class _GetDisplayMediaSampleState extends State<GetDisplayMediaSample> {
     setState(() {
       _inCalling = false;
     });
-    _timer.cancel();
+    _timer!.cancel();
   }
 
   @override

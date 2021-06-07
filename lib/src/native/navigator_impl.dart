@@ -10,7 +10,7 @@ class NavigatorNative extends Navigator {
   }
 
   @override
-  Future<List> getSources() {
+  Future<List?> getSources() {
     return mediaDevices.getSources();
   }
 

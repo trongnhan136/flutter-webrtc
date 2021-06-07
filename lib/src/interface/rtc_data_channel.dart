@@ -30,37 +30,37 @@ class RTCDataChannelInit {
 /// text data as a [String].
 class RTCDataChannelMessage {
   /// Construct a text message with a [String].
-  RTCDataChannelMessage(String text) {
+  RTCDataChannelMessage(String? text) {
     _data = text;
     _isBinary = false;
   }
 
   /// Construct a binary message with a [Uint8List].
-  RTCDataChannelMessage.fromBinary(Uint8List binary) {
+  RTCDataChannelMessage.fromBinary(Uint8List? binary) {
     _data = binary;
     _isBinary = true;
   }
   dynamic _data;
-  bool _isBinary;
+  bool? _isBinary;
 
   /// Tells whether this message contains binary.
   /// If this is false, it's a text message.
-  bool get isBinary => _isBinary;
+  bool? get isBinary => _isBinary;
 
-  MessageType get type => isBinary ? MessageType.binary : MessageType.text;
+  MessageType get type => isBinary! ? MessageType.binary : MessageType.text;
 
   /// Text contents of this message as [String].
   /// Use only on text messages.
   /// See: [isBinary].
-  String get text => _data;
+  String? get text => _data;
 
   /// Binary contents of this message as [Uint8List].
   /// Use only on binary messages.
   /// See: [isBinary].
-  Uint8List get binary => _data;
+  Uint8List? get binary => _data;
 }
 
-typedef RTCDataChannelStateCallback = void Function(RTCDataChannelState state);
+typedef RTCDataChannelStateCallback = void Function(RTCDataChannelState? state);
 
 typedef RTCDataChannelOnMessageCallback = void Function(
     RTCDataChannelMessage data);
@@ -68,19 +68,19 @@ typedef RTCDataChannelOnMessageCallback = void Function(
 abstract class RTCDataChannel {
   RTCDataChannel();
 
-  RTCDataChannelStateCallback onDataChannelState;
-  RTCDataChannelOnMessageCallback onMessage;
+  RTCDataChannelStateCallback? onDataChannelState;
+  RTCDataChannelOnMessageCallback? onMessage;
 
   /// Get current state.
-  RTCDataChannelState get state;
+  RTCDataChannelState? get state;
 
   /// Stream of state change events. Emits the new state on change.
   /// Closes when the [RTCDataChannel] is closed.
-  Stream<RTCDataChannelState> stateChangeStream;
+  Stream<RTCDataChannelState?>? stateChangeStream;
 
   /// Stream of incoming messages. Emits the message.
   /// Closes when the [RTCDataChannel] is closed.
-  Stream<RTCDataChannelMessage> messageStream;
+  Stream<RTCDataChannelMessage>? messageStream;
 
   /// Send a message to this datachannel.
   /// To send a text message, use the default constructor to instantiate a text [RTCDataChannelMessage]

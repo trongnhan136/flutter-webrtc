@@ -18,7 +18,7 @@ List<RTCRtpEncoding> listToRtpEncodings(List<Map<String, dynamic>> list) {
 }
 
 class RTCRtpTransceiverInitNative extends RTCRtpTransceiverInit {
-  RTCRtpTransceiverInitNative(TransceiverDirection direction,
+  RTCRtpTransceiverInitNative(TransceiverDirection? direction,
       List<MediaStream> streams, List<RTCRtpEncoding> sendEncodings)
       : super(
             direction: direction,
@@ -36,20 +36,20 @@ class RTCRtpTransceiverInitNative extends RTCRtpTransceiverInit {
 
   Map<String, dynamic> toMap() {
     return {
-      'direction': typeRtpTransceiverDirectionToString[direction],
-      if (streams != null) 'streamIds': streams.map((e) => e.id).toList(),
+      'direction': typeRtpTransceiverDirectionToString[direction!],
+      if (streams != null) 'streamIds': streams!.map((e) => e.id).toList(),
       if (sendEncodings != null)
-        'sendEncodings': sendEncodings.map((e) => e.toMap()).toList(),
+        'sendEncodings': sendEncodings!.map((e) => e.toMap()).toList(),
     };
   }
 
   static Map<String, dynamic> initToMap(RTCRtpTransceiverInit init) {
     return {
-      'direction': typeRtpTransceiverDirectionToString[init.direction],
+      'direction': typeRtpTransceiverDirectionToString[init.direction!],
       if (init.streams != null)
-        'streamIds': init.streams.map((e) => e.id).toList(),
+        'streamIds': init.streams!.map((e) => e.id).toList(),
       if (init.sendEncodings != null)
-        'sendEncodings': init.sendEncodings.map((e) => e.toMap()).toList(),
+        'sendEncodings': init.sendEncodings!.map((e) => e.toMap()).toList(),
     };
   }
 }
@@ -59,7 +59,7 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
       this._receiver, _peerConnectionId);
 
   factory RTCRtpTransceiverNative.fromMap(Map<dynamic, dynamic> map,
-      {String peerConnectionId}) {
+      {String? peerConnectionId}) {
     var transceiver = RTCRtpTransceiverNative(
         map['transceiverId'],
         typeStringToRtpTransceiverDirection[map['direction']],
@@ -73,7 +73,7 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
   }
 
   static List<RTCRtpTransceiverNative> fromMaps(List<dynamic> map,
-      {String peerConnectionId}) {
+      {String? peerConnectionId}) {
     return map
         .map((e) => RTCRtpTransceiverNative.fromMap(e,
             peerConnectionId: peerConnectionId))
@@ -81,11 +81,11 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
   }
 
   final MethodChannel _channel = WebRTC.methodChannel();
-  String _peerConnectionId;
-  String _id;
-  bool _stop;
-  TransceiverDirection _direction;
-  String _mid;
+  String? _peerConnectionId;
+  String? _id;
+  bool? _stop;
+  TransceiverDirection? _direction;
+  String? _mid;
   RTCRtpSender _sender;
   RTCRtpReceiver _receiver;
 
@@ -94,10 +94,10 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
   }
 
   @override
-  TransceiverDirection get currentDirection => _direction;
+  TransceiverDirection? get currentDirection => _direction;
 
   @override
-  String get mid => _mid;
+  String? get mid => _mid;
 
   @override
   RTCRtpSender get sender => _sender;
@@ -106,10 +106,10 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
   RTCRtpReceiver get receiver => _receiver;
 
   @override
-  bool get stoped => _stop;
+  bool? get stoped => _stop;
 
   @override
-  String get transceiverId => _id;
+  String? get transceiverId => _id;
 
   @override
   Future<void> setDirection(TransceiverDirection direction) async {
@@ -126,7 +126,7 @@ class RTCRtpTransceiverNative extends RTCRtpTransceiver {
   }
 
   @override
-  Future<TransceiverDirection> getCurrentDirection() async {
+  Future<TransceiverDirection?> getCurrentDirection() async {
     try {
       final response = await _channel.invokeMethod(
           'rtpTransceiverGetCurrentDirection', <String, dynamic>{

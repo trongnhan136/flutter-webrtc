@@ -12,37 +12,37 @@ class DataChannelSample extends StatefulWidget {
 }
 
 class _DataChannelSampleState extends State<DataChannelSample> {
-  RTCPeerConnection _peerConnection;
+  RTCPeerConnection? _peerConnection;
   bool _inCalling = false;
 
-  RTCDataChannelInit _dataChannelDict;
-  RTCDataChannel _dataChannel;
+  late RTCDataChannelInit _dataChannelDict;
+  RTCDataChannel? _dataChannel;
 
-  String _sdp;
+  String _sdp = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _onSignalingState(RTCSignalingState state) {
+  void _onSignalingState(RTCSignalingState? state) {
     print(state);
   }
 
-  void _onIceGatheringState(RTCIceGatheringState state) {
+  void _onIceGatheringState(RTCIceGatheringState? state) {
     print(state);
   }
 
-  void _onIceConnectionState(RTCIceConnectionState state) {
+  void _onIceConnectionState(RTCIceConnectionState? state) {
     print(state);
   }
 
   void _onCandidate(RTCIceCandidate candidate) {
-    print('onCandidate: ' + candidate.candidate);
-    _peerConnection.addCandidate(candidate);
+    print('onCandidate: ' + candidate.candidate!);
+    _peerConnection!.addCandidate(candidate);
     setState(() {
       _sdp += '\n';
-      _sdp += candidate.candidate;
+      _sdp += candidate.candidate!;
     });
   }
 
@@ -51,8 +51,8 @@ class _DataChannelSampleState extends State<DataChannelSample> {
   }
 
   /// Send some sample messages and handle incoming messages.
-  void _onDataChannel(RTCDataChannel dataChannel) {
-    dataChannel.onMessage = (message) {
+  void _onDataChannel(RTCDataChannel? dataChannel) {
+    dataChannel!.onMessage = (message) {
       if (message.type == MessageType.text) {
         print(message.text);
       } else {
@@ -60,7 +60,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
       }
     };
     // or alternatively:
-    dataChannel.messageStream.listen((message) {
+    dataChannel.messageStream!.listen((message) {
       if (message.type == MessageType.text) {
         print(message.text);
       } else {
@@ -101,11 +101,11 @@ class _DataChannelSampleState extends State<DataChannelSample> {
       _peerConnection =
           await createPeerConnection(configuration, loopbackConstraints);
 
-      _peerConnection.onSignalingState = _onSignalingState;
-      _peerConnection.onIceGatheringState = _onIceGatheringState;
-      _peerConnection.onIceConnectionState = _onIceConnectionState;
-      _peerConnection.onIceCandidate = _onCandidate;
-      _peerConnection.onRenegotiationNeeded = _onRenegotiationNeeded;
+      _peerConnection!.onSignalingState = _onSignalingState;
+      _peerConnection!.onIceGatheringState = _onIceGatheringState;
+      _peerConnection!.onIceConnectionState = _onIceConnectionState;
+      _peerConnection!.onIceCandidate = _onCandidate;
+      _peerConnection!.onRenegotiationNeeded = _onRenegotiationNeeded;
 
       _dataChannelDict = RTCDataChannelInit();
       _dataChannelDict.id = 1;
@@ -115,15 +115,15 @@ class _DataChannelSampleState extends State<DataChannelSample> {
       _dataChannelDict.protocol = 'sctp';
       _dataChannelDict.negotiated = false;
 
-      _dataChannel = await _peerConnection.createDataChannel(
+      _dataChannel = await _peerConnection!.createDataChannel(
           'dataChannel', _dataChannelDict);
-      _peerConnection.onDataChannel = _onDataChannel;
+      _peerConnection!.onDataChannel = _onDataChannel;
 
-      var description = await _peerConnection.createOffer(offerSdpConstraints);
+      var description = await _peerConnection!.createOffer(offerSdpConstraints);
       print(description.sdp);
-      await _peerConnection.setLocalDescription(description);
+      await _peerConnection!.setLocalDescription(description);
 
-      _sdp = description.sdp;
+      _sdp = description.sdp ?? '';
       //change for loopback.
       //description.type = 'answer';
       //_peerConnection.setRemoteDescription(description);
@@ -139,8 +139,8 @@ class _DataChannelSampleState extends State<DataChannelSample> {
 
   void _hangUp() async {
     try {
-      await _dataChannel.close();
-      await _peerConnection.close();
+      await _dataChannel!.close();
+      await _peerConnection!.close();
       _peerConnection = null;
     } catch (e) {
       print(e.toString());
@@ -160,7 +160,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
         builder: (context, orientation) {
           return Center(
             child: Container(
-              child: _inCalling ? Text(_sdp) : Text('data channel test'),
+              child: _inCalling ? Text(_sdp!) : Text('data channel test'),
             ),
           );
         },

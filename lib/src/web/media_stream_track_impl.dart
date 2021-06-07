@@ -6,31 +6,31 @@ import '../interface/media_stream_track.dart';
 
 class MediaStreamTrackWeb extends MediaStreamTrack {
   MediaStreamTrackWeb(this.jsTrack) {
-    jsTrack.onEnded.listen((event) {
+    jsTrack!.onEnded.listen((event) {
       onEnded?.call();
     });
-    jsTrack.onMute.listen((event) {
+    jsTrack!.onMute.listen((event) {
       onMute?.call();
     });
   }
 
-  final html.MediaStreamTrack jsTrack;
+  final html.MediaStreamTrack? jsTrack;
 
   @override
-  String get id => jsTrack.id;
+  String? get id => jsTrack!.id;
 
   @override
-  String get kind => jsTrack.kind;
+  String? get kind => jsTrack!.kind;
 
   @override
-  String get label => jsTrack.label;
+  String? get label => jsTrack!.label;
 
   @override
-  bool get enabled => jsTrack.enabled;
+  bool? get enabled => jsTrack!.enabled;
 
   @override
-  set enabled(bool b) {
-    jsTrack.enabled = b;
+  set enabled(bool? b) {
+    jsTrack!.enabled = b;
   }
 
   @override
@@ -46,15 +46,15 @@ class MediaStreamTrackWeb extends MediaStreamTrack {
 
   @override
   void setVolume(double volume) {
-    final constraints = jsTrack.getConstraints();
+    final constraints = jsTrack!.getConstraints();
     constraints['volume'] = volume;
-    js.JsObject.fromBrowserObject(jsTrack)
+    js.JsObject.fromBrowserObject(jsTrack!)
         .callMethod('applyConstraints', [js.JsObject.jsify(constraints)]);
   }
 
   @override
   void setMicrophoneMute(bool mute) {
-    jsTrack.enabled = !mute;
+    jsTrack!.enabled = !mute;
   }
 
   @override
@@ -63,14 +63,14 @@ class MediaStreamTrackWeb extends MediaStreamTrack {
   }
 
   @override
-  Future<dynamic> captureFrame([String filePath]) async {
-    final imageCapture = html.ImageCapture(jsTrack);
+  Future<dynamic> captureFrame([String? filePath]) async {
+    final imageCapture = html.ImageCapture(jsTrack!);
     final bitmap = await imageCapture.grabFrame();
-    final html.CanvasElement canvas = html.Element.canvas();
+    final html.CanvasElement canvas = html.Element.canvas() as html.CanvasElement;
     canvas.width = bitmap.width;
     canvas.height = bitmap.height;
     final html.ImageBitmapRenderingContext renderer =
-        canvas.getContext('bitmaprenderer');
+        canvas.getContext('bitmaprenderer') as html.ImageBitmapRenderingContext;
     renderer.transferFromImageBitmap(bitmap);
     final dataUrl = canvas.toDataUrl();
     bitmap.close();
@@ -79,7 +79,7 @@ class MediaStreamTrackWeb extends MediaStreamTrack {
 
   @override
   Future<void> dispose() async {
-    jsTrack.stop();
+    jsTrack!.stop();
   }
 
   @override

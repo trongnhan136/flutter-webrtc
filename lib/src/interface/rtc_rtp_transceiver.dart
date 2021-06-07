@@ -16,29 +16,29 @@ class RTCRtpTransceiverInit {
     this.streams,
     this.sendEncodings,
   });
-  TransceiverDirection direction;
-  List<MediaStream> streams;
-  List<RTCRtpEncoding> sendEncodings;
+  TransceiverDirection? direction;
+  List<MediaStream>? streams;
+  List<RTCRtpEncoding>? sendEncodings;
 }
 
 abstract class RTCRtpTransceiver {
   RTCRtpTransceiver();
 
-  TransceiverDirection get currentDirection;
+  TransceiverDirection? get currentDirection;
 
-  String get mid;
+  String? get mid;
 
   RTCRtpSender get sender;
 
   RTCRtpReceiver get receiver;
 
-  bool get stoped;
+  bool? get stoped;
 
-  String get transceiverId;
+  String? get transceiverId;
 
   Future<void> setDirection(TransceiverDirection direction);
 
-  Future<TransceiverDirection> getCurrentDirection();
+  Future<TransceiverDirection?> getCurrentDirection();
 
   Future<void> stop();
 }
