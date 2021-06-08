@@ -33,8 +33,7 @@ class RTCVideoValue {
       width: width ?? this.width,
       height: height ?? this.height,
       rotation: rotation ?? this.rotation,
-      renderVideo: (this.width != 0 && this.height != 0 && renderVideo!) ??
-          this.renderVideo,
+      renderVideo: this.width != 0 && this.height != 0 && renderVideo!,
     );
   }
 
