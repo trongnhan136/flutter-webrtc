@@ -8,12 +8,12 @@ import '../rtc_video_renderer.dart';
 import 'rtc_video_renderer_impl.dart';
 
 class RTCVideoView extends StatelessWidget {
-  RTCVideoView(
-    this._renderer, {
+  RTCVideoView(this._renderer, {
     Key key,
     this.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitContain,
     this.mirror = false,
-  })  : assert(objectFit != null),
+  })
+      : assert(objectFit != null),
         assert(mirror != null),
         super(key: key);
 
@@ -52,7 +52,8 @@ class RTCVideoView extends StatelessWidget {
                 );
               },
               child: Transform(
-                transform: Matrix4.identity()..rotateY(mirror ? -pi : 0.0),
+                transform: Matrix4.identity()
+                  ..rotateY(mirror ? -pi : 0.0),
                 alignment: FractionalOffset.center,
                 child: videoRenderer.textureId != null
                     ? Texture(textureId: videoRenderer.textureId)
