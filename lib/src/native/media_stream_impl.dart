@@ -40,12 +40,12 @@ class MediaStreamNative extends MediaStream {
 
   @override
   Future<void> getMediaTracks() async {
-    final response = await (_channel.invokeMethod<Map<dynamic, dynamic>>(
+    final response = await _channel.invokeMethod<Map<dynamic, dynamic>>(
       'mediaStreamGetTracks',
       <String, dynamic>{'streamId': id},
-    ) as FutureOr<Map<dynamic, dynamic>>);
+    );
 
-    setMediaTracks(response['audioTracks'], response['videoTracks']);
+    setMediaTracks(response?['audioTracks'], response?['videoTracks']);
   }
 
   @override
