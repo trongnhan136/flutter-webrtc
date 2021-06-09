@@ -68,7 +68,7 @@ class RTCPeerConnectionWeb extends RTCPeerConnection {
 
     _jsPc.onIceConnectionStateChange.listen((_) {
       _iceConnectionState =
-          iceConnectionStateForString(_jsPc.iceConnectionState);
+          iceConnectionStateForString(_jsPc.iceConnectionState!);
       onIceConnectionState?.call(_iceConnectionState);
     });
 

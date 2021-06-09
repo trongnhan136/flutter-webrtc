@@ -9,15 +9,17 @@ import 'utils.dart';
 
 class MediaDeviceNative extends MediaDevices {
   @override
-  Future<MediaStream> getUserMedia(
-      Map<String, dynamic> mediaConstraints) async {
+  Future<MediaStream> getUserMedia(Map<String, dynamic> mediaConstraints) async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
         'getUserMedia',
         <String, dynamic>{'constraints': mediaConstraints},
-      ) as FutureOr<Map<dynamic, dynamic>>);
-      String? streamId = response['streamId'];
+      );
+      if (response == null) {
+        throw Exception('getUserMedia return null, something wrong');
+      }
+      String streamId = response['streamId'];
       var stream = MediaStreamNative(streamId, 'local');
       stream.setMediaTracks(response['audioTracks'], response['videoTracks']);
       return stream;
@@ -27,15 +29,17 @@ class MediaDeviceNative extends MediaDevices {
   }
 
   @override
-  Future<MediaStream> getDisplayMedia(
-      Map<String, dynamic> mediaConstraints) async {
+  Future<MediaStream> getDisplayMedia(Map<String, dynamic> mediaConstraints) async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
         'getDisplayMedia',
         <String, dynamic>{'constraints': mediaConstraints},
-      ) as FutureOr<Map<dynamic, dynamic>>);
-      String? streamId = response['streamId'];
+      );
+      if (response == null) {
+        throw Exception('getDisplayMedia return null, something wrong');
+      }
+      String streamId = response['streamId'];
       var stream = MediaStreamNative(streamId, 'local');
       stream.setMediaTracks(response['audioTracks'], response['videoTracks']);
       return stream;
@@ -45,14 +49,14 @@ class MediaDeviceNative extends MediaDevices {
   }
 
   @override
-  Future<List<dynamic>?> getSources() async {
+  Future<List<dynamic>> getSources() async {
     var channel = WebRTC.methodChannel();
     try {
-      final response = await (channel.invokeMethod<Map<dynamic, dynamic>>(
+      final response = await channel.invokeMethod<Map<dynamic, dynamic>>(
         'getSources',
         <String, dynamic>{},
-      ) as FutureOr<Map<dynamic, dynamic>>);
-      List<dynamic>? sources = response['sources'];
+      );
+      List<dynamic> sources = response?['sources'];
       return sources;
     } on PlatformException catch (e) {
       throw 'Unable to getSources: ${e.message}';

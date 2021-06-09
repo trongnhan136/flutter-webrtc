@@ -15,9 +15,8 @@ class RTCVideoRendererNative extends VideoRenderer {
 
   @override
   Future<void> initialize() async {
-    final response = await (_channel
-        .invokeMethod<Map<dynamic, dynamic>>('createVideoRenderer', {}) as FutureOr<Map<dynamic, dynamic>>);
-    _textureId = response['textureId'];
+    final response = await _channel.invokeMethod<Map<dynamic, dynamic>?>('createVideoRenderer', {});
+    _textureId = response!['textureId'];
     _eventSubscription = EventChannel('FlutterWebRTC/Texture$textureId')
         .receiveBroadcastStream()
         .listen(eventListener, onError: errorListener);

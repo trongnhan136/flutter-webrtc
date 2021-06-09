@@ -22,10 +22,9 @@ class RTCFactoryNative extends RTCFactory {
   Future<MediaStream> createLocalMediaStream(String label) async {
     var _channel = WebRTC.methodChannel();
 
-    final response = await (_channel
-        .invokeMethod<Map<dynamic, dynamic>>('createLocalMediaStream') as FutureOr<Map<dynamic, dynamic>>);
+    final response = await _channel.invokeMethod<Map<dynamic, dynamic>>('createLocalMediaStream') ;
 
-    return MediaStreamNative(response['streamId'], label);
+    return MediaStreamNative(response!['streamId'], label);
   }
 
   @override

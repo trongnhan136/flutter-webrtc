@@ -88,7 +88,7 @@ final typeRtpTransceiverDirectionToString = <TransceiverDirection, String>{
   TransceiverDirection.Inactive: 'inactive',
 };
 
-RTCIceConnectionState iceConnectionStateForString(String? state) {
+RTCIceConnectionState iceConnectionStateForString(String state) {
   switch (state) {
     case 'new':
       return RTCIceConnectionState.RTCIceConnectionStateNew;

@@ -160,7 +160,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
         builder: (context, orientation) {
           return Center(
             child: Container(
-              child: _inCalling ? Text(_sdp!) : Text('data channel test'),
+              child: _inCalling ? Text(_sdp) : Text('data channel test'),
             ),
           );
         },
